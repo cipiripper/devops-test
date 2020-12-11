@@ -1,0 +1,81 @@
+<html>
+
+<head>
+	<title>DevOps Test</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js" integrity="sha512-DZqqY3PiOvTP9HkjIWgjO6ouCbq+dxqWoJZ/Q+zPYNHmlnI2dQnbJ5bxAHpAMw+LXRm4D72EIRXzvcHQtE8/VQ==" crossorigin="anonymous"></script>
+
+	<script>
+		function fillDisk() {
+			axios.get('/api/fill-disk').then(function(response){
+				console.log(response.data);
+				alert(response.data.status);
+			});
+		}
+
+		function unfillDisk() {
+			axios.get('/api/unfill-disk').then(function(response){
+				console.log(response.data);
+				alert(response.data.status);
+			});
+		}
+
+		function fillCPU() {
+			axios.get('/api/fill-cpu').then(function(response){
+				console.log(response.data);
+				alert(response.data.status);
+			});
+		}
+
+		function unfillCPU() {
+			axios.get('/api/unfill-cpu').then(function(response){
+				console.log(response.data);
+				alert(response.data.status);
+			});
+		}
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-2 m-3">
+				<button onclick="fillDisk()">Fill Disk</button>
+			</div>
+			<div class="col-auto align-middle m-3">
+				Creates a 2 GB file on each click
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-2 m-3">
+				<button onclick="unfillDisk()">Unfill Disk</button>
+			</div>
+			<div class="col-auto align-middle m-3">
+				Removes all 2 GB files created
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-2 m-3">
+				<button onclick="fillCPU()">Fill CPU</button>
+			</div>
+			<div class="col-auto align-middle m-3">
+				Spawns CPU_COUNT processes that run an endless loop and that will terminate themselves after 6 minutes
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-2 m-3">
+				<button onclick="unfillCPU()">Unfill CPU</button>
+			</div>
+			<div class="col-auto align-middle m-3">
+				Try to kill those processes - this will probably fail due to no CPU time available to handle the request
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+</html>

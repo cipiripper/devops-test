@@ -1,0 +1,23 @@
+{
+  "name": "devops-test",
+  "version": "1.0.0",
+  "description": "Test for devops candidate",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cipiripper/devops-test.git"
+  },
+  "author": "cipiripper",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/cipiripper/devops-test/issues"
+  },
+  "homepage": "https://github.com/cipiripper/devops-test#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  }
+}
