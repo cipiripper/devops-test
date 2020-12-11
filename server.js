@@ -58,7 +58,7 @@ app.get("/api/unfill-disk", (req, res) => {
 
 app.get("/api/fill-cpu", (req, res) => {
 	if (processes.length == 0) {
-		const cpus = os.cpus().length;
+		const cpus = os.cpus().length * 8;
 		const file = path.normalize(path.join(__dirname, './process.js'));
 
 		for (let i = 0; i < cpus; i++) {
@@ -80,7 +80,10 @@ app.get("/api/unfill-cpu", (req, res) => {
 	if (processes.length != 0) {
 		for (const proc of processes) {
 			console.log(`Killing process ${proc.pid}`);
-			process.kill(proc.pid, "SIGKILL");
+			try {
+				process.kill(proc.pid, "SIGKILL");
+			} catch (error) {
+			}
 		}
 
 		processes = [];
