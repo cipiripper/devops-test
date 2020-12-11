@@ -6,10 +6,24 @@ const logger = require('morgan');
 const fs = require('fs');
 const execSync = require('child_process').execSync;
 const execFile = require('child_process').execFile;
-const os = require('os')
+const os = require('os');
 
 const app = express();
-let processes = [];
+
+function clearProcesses() {
+	try {
+		const dir = path.normalize(path.join(__dirname, 'pids'));
+		const files = fs.readdirSync(dir);
+
+		for (const pidFile of files) {
+
+			fs.unlinkSync(path.join(dir, pidFile));
+			try {
+				process.kill(pidFile, "SIGKILL");
+			} catch (error) { }
+		}
+	} catch (error) { }
+}
 
 function randomString(length, chars) {
 	chars = chars || "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -57,45 +71,26 @@ app.get("/api/unfill-disk", (req, res) => {
 });
 
 app.get("/api/fill-cpu", (req, res) => {
-	if (processes.length == 0) {
-		const cpus = os.cpus().length * 8;
-		const file = path.normalize(path.join(__dirname, './process.js'));
+	const startProcesses = 2;
+	const file = path.normalize(path.join(__dirname, './process.js'));
+	const pidDir = path.join(__dirname, 'pids');
+	execSync(`mkdir -p ${pidDir}`);
 
-		for (let i = 0; i < cpus; i++) {
-			const process = execFile(file);
-			processes.push(process);
-		}
-
-		res.send({
-			status: `Started ${cpus} processes`
-		});
-	} else {
-		res.send({
-			status: `There are processes already running. Restart the server or issue an /api/unfill-cpu call`
-		});
+	for (let i = 0; i < startProcesses; i++) {
+		const process = execFile(file);
+		fs.writeFileSync(path.join(pidDir, process.pid+''));
 	}
+
+	res.send({
+		status: `Started ${startProcesses} processes`
+	});
 });
 
 app.get("/api/unfill-cpu", (req, res) => {
-	if (processes.length != 0) {
-		for (const proc of processes) {
-			console.log(`Killing process ${proc.pid}`);
-			try {
-				process.kill(proc.pid, "SIGKILL");
-			} catch (error) {
-			}
-		}
-
-		processes = [];
-
-		res.send({
-			status: `Terminated all processes`
-		});
-	} else {
-		res.send({
-			status: `There are no processes running. Issue an /api/fill-cpu call first`
-		});
-	}
+	clearProcesses();
+	res.send({
+		status: `Terminated all processes`
+	});
 });
 
 app.listen(PORT, () => {

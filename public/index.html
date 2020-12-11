@@ -46,7 +46,7 @@
 					setServerStatus(end - start + 'ms');
 				};
 			}).catch(function(error) {
-				setServerStatus('<span style="color:red">error.message</span>');
+				setServerStatus('<span style="color:red">' + error.message + '</span>');
 			}).finally(function() {
 				setTimeout(check, 2000);
 			});
@@ -82,7 +82,7 @@
 				<button onclick="fillCPU()">Fill CPU</button>
 			</div>
 			<div class="col-auto align-middle m-3">
-				Spawns CPU_COUNT processes that run an endless loop and that will terminate themselves after 6 minutes
+				Spawns 2 processes that run an endless loop and that will terminate themselves after 6 minutes
 			</div>
 		</div>
 
@@ -91,7 +91,7 @@
 				<button onclick="unfillCPU()">Unfill CPU</button>
 			</div>
 			<div class="col-auto align-middle m-3">
-				Try to kill those processes - this will probably fail due to no CPU time available to handle the request
+				Terminates all started fill-cpu processes
 			</div>
 		</div>
 

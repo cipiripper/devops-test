@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+const fs = require('fs');
 
 const start = Date.now();
 const maxRun = 60000 * 6;
@@ -12,4 +13,9 @@ while (true) {
 	}
 }
 
-console.log("End...");
+console.log("Removing pid file...");
+try {
+	fs.unlinkSync('./pids/' + process.pid);
+} catch (error) { }
+
+console.log("End.");
