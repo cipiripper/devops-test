@@ -78,7 +78,7 @@ app.get("/api/fill-cpu", (req, res) => {
 
 	for (let i = 0; i < startProcesses; i++) {
 		const process = execFile(file);
-		fs.writeFileSync(path.join(pidDir, process.pid+''));
+		fs.writeFileSync(path.join(pidDir, process.pid+''), Buffer.from(process.pid+''));
 	}
 
 	res.send({
